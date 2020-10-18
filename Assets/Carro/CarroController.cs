@@ -5,9 +5,6 @@ using TMPro;
 
 public class CarroController : MonoBehaviour
 {
-    [Header("Temporal References")]
-    public TextMeshProUGUI speedTxt;
-    public TextMeshProUGUI rotationTxt;
 
     [Header("Public References")]
     public Rigidbody rigidbody;
@@ -36,8 +33,6 @@ public class CarroController : MonoBehaviour
 
     void Update()
     {
-            speedTxt.text = "Speed: " + currentForce;
-            rotationTxt.text = "Rotation: " + currentRotate;
 
         if(Input.touchCount > 0){
 
