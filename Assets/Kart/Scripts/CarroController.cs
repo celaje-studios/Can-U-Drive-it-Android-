@@ -13,7 +13,6 @@ public class CarroController : MonoBehaviour
 
     [Header("Parameters")]
     public float forwardForce = 5f;
-    public float gravity = 10f;
     public float steering = 40f;
 
     //Variables Privadas
@@ -24,6 +23,8 @@ public class CarroController : MonoBehaviour
     float rotate, currentRotate;
     float currentForce;
     float maxAcceleration;
+
+    RaycastHit hit;
 
     void Start()
     {
@@ -76,14 +77,21 @@ public class CarroController : MonoBehaviour
         }
 
         currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f);
-        transform.position = Vector3.Lerp(transform.position, rigidbody.transform.position - new Vector3(0, 0.8f, 0), Time.deltaTime * 1.5f);
+
+        Vector3 newKartPos = Vector3.Lerp(transform.position,rigidbody.transform.position, Time.deltaTime * 1.5f);
+        newKartPos = new Vector3 (newKartPos.x, transform.position.y, newKartPos.z);
+        transform.position = newKartPos;
+
 
     }
 
     void FixedUpdate(){
         rigidbody.AddForce(transform.forward * currentForce, ForceMode.Acceleration);
 
-        rigidbody.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
+        Ray downRay = new Ray(kartModel.position + new Vector3(0, 10, 0), -Vector3.up);
+        Physics.Raycast(downRay, out hit);
+
+        //rigidbody.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
 
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate, 0), Time.deltaTime * 5f);
         kartModel.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate*2f, 0), Time.deltaTime * 5f);

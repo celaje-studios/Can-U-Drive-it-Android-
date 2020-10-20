@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/PlayRoom/DemoMainMenu.unity
     guid: 941b044f10dab564493d105a111b5286
   - enabled: 1
-    path: Assets/PlayRoom/Pista1.unity
+    path: Assets/Kart/Pistas/Pista1/Kart_Pista1.unity
     guid: 6f14433bdd801804b93a9e2a87af025a
   - enabled: 1
-    path: Assets/PlayRoom/Pista2.unity
+    path: Assets/Kart/Pistas/Pista2/Pista2.unity
     guid: 898666ac62c80204a8bc0689196a709d
   - enabled: 1
     path: Assets/PlayRoom/Pista3.unity
