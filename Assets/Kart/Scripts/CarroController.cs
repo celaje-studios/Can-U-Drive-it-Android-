@@ -8,8 +8,8 @@ public class CarroController : MonoBehaviour
 
     [Header("Public References")]
     public Rigidbody rigidbody;
-
     public Transform kartModel;
+    public KartEffectController kartEffect;
 
     [Header("Parameters")]
     public float forwardForce = 5f;
@@ -23,8 +23,6 @@ public class CarroController : MonoBehaviour
     float rotate, currentRotate;
     float currentForce;
     float maxAcceleration;
-
-    RaycastHit hit;
 
     void Start()
     {
@@ -58,14 +56,12 @@ public class CarroController : MonoBehaviour
                 int dir = distanciaX > 0 ? 1 : -1;
                 Steer(dir, Mathf.Abs(distanciaX));
                 distanciaY = maxAcceleration * Mathf.Clamp(touchEndPos.y - touchIniPos.y, -50f, 50f) / 50;
-
             }
 
             if(touch.phase == TouchPhase.Ended){
                 touchEndPos = touch.position;
-                if(touchIniPos == touchEndPos){
-                    Debug.Log("Tap");
-                }
+
+                kartEffect.stopDrifting();
 
             }
 
@@ -88,9 +84,6 @@ public class CarroController : MonoBehaviour
     void FixedUpdate(){
         rigidbody.AddForce(transform.forward * currentForce, ForceMode.Acceleration);
 
-        Ray downRay = new Ray(kartModel.position + new Vector3(0, 10, 0), -Vector3.up);
-        Physics.Raycast(downRay, out hit);
-
         //rigidbody.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
 
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate, 0), Time.deltaTime * 5f);
@@ -100,5 +93,11 @@ public class CarroController : MonoBehaviour
     public void Steer(int direction, float amount)
     {
         rotate = (steering * direction) * amount;
+
+        if(amount > .7f){
+            kartEffect.startDrifting();
+        }else{
+            kartEffect.stopDrifting();
+        }
     }
 }
