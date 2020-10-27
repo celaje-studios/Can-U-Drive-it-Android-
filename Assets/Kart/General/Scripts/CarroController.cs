@@ -15,7 +15,9 @@ public class CarroController : MonoBehaviour
     public float forwardForce = 70f;
     public float steering = 20;
 
-    //Variables Privadas
+    /*********************
+    * Variables Privadas
+    *********************/
     Vector2 touchIniPos;
     Vector2 touchEndPos;
     float distanciaX;
@@ -24,9 +26,13 @@ public class CarroController : MonoBehaviour
     float currentForce;
     float maxAcceleration, maxBreak;
 
+    Ray ray;
+    RaycastHit hit;
+
     void Start()
     {
         maxAcceleration = forwardForce*.4f;
+        ray = new Ray(transform.position, -Vector3.up);
     }
 
 
@@ -44,16 +50,29 @@ public class CarroController : MonoBehaviour
             if(touch.phase == TouchPhase.Moved){
                 touchEndPos = touch.position;
                 distanciaX = Mathf.Clamp(touchEndPos.x - touchIniPos.x, -200, 200) / 200;
-                Steer(distanciaX);
                 distanciaY = maxAcceleration * Mathf.Clamp(touchEndPos.y - touchIniPos.y, -100, 100) / 100;
+                Steer(distanciaX);
 
+                /*if(distanciaY > distanciaX){
+                    if(distanciaX > 30){
+                        Steer(distanciaX);
+                    }
+                }else{
+                    Steer(distanciaX);
+                }*/
             }
 
             if(touch.phase == TouchPhase.Stationary){
-                touchEndPos = touch.position;
-                distanciaX = Mathf.Clamp(touchEndPos.x - touchIniPos.x, -200, 200) / 200;
+
+                /*if(distanciaY > distanciaX){
+                    if(distanciaX > 30){
+                        Steer(distanciaX);
+                    }
+                }else{
+                    Steer(distanciaX);
+                }*/
                 Steer(distanciaX);
-                distanciaY = maxAcceleration * Mathf.Clamp(touchEndPos.y - touchIniPos.y, -100, 100) / 100;
+
             }
 
             if(touch.phase == TouchPhase.Ended){
@@ -72,18 +91,28 @@ public class CarroController : MonoBehaviour
 
         currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f);
 
-        Vector3 newKartPos = Vector3.Lerp(transform.position,rigidbody.transform.position, Time.deltaTime * 1.5f);
-        newKartPos = new Vector3 (newKartPos.x, transform.position.y, newKartPos.z);
-        transform.position = newKartPos;
-
+        //Vector3 newKartPos = Vector3.Lerp(transform.position,rigidbody.transform.position, Time.deltaTime * 1.5f);
+        //newKartPos = new Vector3 (newKartPos.x, transform.position.y, newKartPos.z);
+        transform.position = Vector3.Lerp(transform.position, rigidbody.transform.position, Time.deltaTime * 1.5f);
 
     }
 
     void FixedUpdate(){
-        rigidbody.AddForce(transform.forward * currentForce, ForceMode.Acceleration);
-
+        
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate, 0), Time.deltaTime * 5f);
         kartModel.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate*2f, 0), Time.deltaTime * 5f);
+
+        ray = new Ray(transform.position, -Vector3.up);
+        if(Physics.Raycast(ray, out hit)){
+            if(hit.transform.GetComponent<GroundController>().getGroundType() < 1){
+                Debug.Log("ground: " + hit.transform.GetComponent<GroundController>().getGroundType());
+                rigidbody.AddForce(transform.forward * currentForce, ForceMode.Acceleration);
+            }else{
+                Debug.Log("ground: " + hit.transform.GetComponent<GroundController>().getGroundType());
+                rigidbody.AddForce(transform.forward * currentForce*.4f, ForceMode.Acceleration);
+            }
+        }
+
     }
 
     public void Steer(float amount)
