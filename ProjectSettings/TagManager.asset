@@ -6,8 +6,9 @@ TagManager:
   tags:
   - street
   - grass
-  - ground
-  - turbo
+  - enviroment
+  - utilery
+  - limits
   layers:
   - Default
   - TransparentFX
@@ -17,14 +18,14 @@ TagManager:
   - UI
   - 
   - 
-  - Graphics
-  - Physics
-  - KartBody
-  - KartWheels
-  - Utilery
-  - Enviroment
-  - KartCollitions
   - Ground
+  - Limits
+  - Physics
+  - Utilery
+  - KartColitions
+  - KartWheels
+  - KartBody
+  - 
   - 
   - 
   - 

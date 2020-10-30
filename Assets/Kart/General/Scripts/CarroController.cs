@@ -7,7 +7,7 @@ public class CarroController : MonoBehaviour
 {
 
     [Header("Public References")]
-    public Rigidbody rigidbody;
+    public Rigidbody sphere;
     public Transform kartModel;
     public KartEffectController kartEffect;
 
@@ -18,111 +18,92 @@ public class CarroController : MonoBehaviour
     /*********************
     * Variables Privadas
     *********************/
-    Vector2 touchIniPos;
-    Vector2 touchEndPos;
-    float distanciaX;
-    float distanciaY;
+    Vector2 touchIniPos, touchEndPos;
+    float distanciaX, distanciaY;
     float rotate, currentRotate;
-    float currentForce;
-    float maxAcceleration, maxBreak;
-
-    Ray ray;
-    RaycastHit hit;
+    float currentForce, maxAcceleration;
+    bool reposition, breaking;
 
     void Start()
     {
         maxAcceleration = forwardForce*.4f;
-        ray = new Ray(transform.position, -Vector3.up);
+        reposition = false;
     }
 
 
     void Update()
     {
+        if(!reposition){
+            if(Input.touchCount > 0){
 
-        if(Input.touchCount > 0){
+                Touch touch = Input.GetTouch(0);
+                
+                if(touch.phase == TouchPhase.Began){
+                    touchIniPos = touch.position;
+                }
 
-            Touch touch = Input.GetTouch(0);
-            
-            if(touch.phase == TouchPhase.Began){
-                touchIniPos = touch.position;
-            }
-
-            if(touch.phase == TouchPhase.Moved){
-                touchEndPos = touch.position;
-                distanciaX = Mathf.Clamp(touchEndPos.x - touchIniPos.x, -200, 200) / 200;
-                distanciaY = maxAcceleration * Mathf.Clamp(touchEndPos.y - touchIniPos.y, -100, 100) / 100;
-                Steer(distanciaX);
-
-                /*if(distanciaY > distanciaX){
-                    if(distanciaX > 30){
-                        Steer(distanciaX);
-                    }
-                }else{
+                if(touch.phase == TouchPhase.Moved){
+                    touchEndPos = touch.position;
+                    distanciaX = Mathf.Clamp(touchEndPos.x - touchIniPos.x, -150, 150) / 150;
+                    distanciaY = maxAcceleration * Mathf.Clamp(touchEndPos.y - touchIniPos.y, -75, 75) / 75;
                     Steer(distanciaX);
-                }*/
-            }
+                }
 
-            if(touch.phase == TouchPhase.Stationary){
-
-                /*if(distanciaY > distanciaX){
-                    if(distanciaX > 30){
-                        Steer(distanciaX);
-                    }
-                }else{
+                if(touch.phase == TouchPhase.Stationary){
                     Steer(distanciaX);
-                }*/
-                Steer(distanciaX);
+                }
+
+                if(touch.phase == TouchPhase.Ended){
+                    rotate = 0f;
+                    currentForce = forwardForce;
+                    kartEffect.stopDrifting();
+                }
+
+                currentForce = forwardForce + distanciaY;
 
             }
 
-            if(touch.phase == TouchPhase.Ended){
-                touchEndPos = touch.position;
+            currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f);
 
-                kartEffect.stopDrifting();
-
-            }
-
-            currentForce = forwardForce + distanciaY;
-
-        }else{
-            rotate = 0f;
-            currentForce = forwardForce;
+            transform.position = Vector3.Lerp(transform.position, sphere.transform.position, Time.deltaTime * 5f);
         }
-
-        currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f);
-
-        //Vector3 newKartPos = Vector3.Lerp(transform.position,rigidbody.transform.position, Time.deltaTime * 1.5f);
-        //newKartPos = new Vector3 (newKartPos.x, transform.position.y, newKartPos.z);
-        transform.position = Vector3.Lerp(transform.position, rigidbody.transform.position, Time.deltaTime * 1.5f);
-
     }
 
     void FixedUpdate(){
-        
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate, 0), Time.deltaTime * 5f);
         kartModel.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate*2f, 0), Time.deltaTime * 5f);
-
-        ray = new Ray(transform.position, -Vector3.up);
-        if(Physics.Raycast(ray, out hit)){
-            if(hit.transform.GetComponent<GroundController>().getGroundType() < 1){
-                Debug.Log("ground: " + hit.transform.GetComponent<GroundController>().getGroundType());
-                rigidbody.AddForce(transform.forward * currentForce, ForceMode.Acceleration);
-            }else{
-                Debug.Log("ground: " + hit.transform.GetComponent<GroundController>().getGroundType());
-                rigidbody.AddForce(transform.forward * currentForce*.4f, ForceMode.Acceleration);
-            }
+        
+        if(breaking){
+            sphere.AddForce(transform.forward * currentForce, ForceMode.Acceleration);
+        }else{
+            sphere.AddForce(transform.forward * currentForce * .5f, ForceMode.Acceleration);
         }
-
+        
     }
 
     public void Steer(float amount)
     {
         rotate = steering * amount;
 
-        if(Mathf.Abs(amount) > .5f){
-            kartEffect.startDrifting();
-        }else{
-            kartEffect.stopDrifting();
-        }
+        kartEffect.startDrifting(amount);
+
+    }
+
+    public void leaveColition(){
+        Debug.Log("reposition");
+        reposition = true;
+        currentForce = 0;
+        sphere.position = new Vector3(kartModel.position.x, sphere.position.y, kartModel.position.z);
+        transform.position = new Vector3(kartModel.position.x, transform.position.y, kartModel.position.z);
+        kartModel.localPosition = new Vector3(0,kartModel.localPosition.y, 0);
+        reposition = false;
+    }
+
+    public void isOnStreet(bool inbreak){
+        breaking = inbreak;
+    }
+
+    public void isOnColition(bool colition){
+
     }
 }
