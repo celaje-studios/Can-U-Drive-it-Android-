@@ -12,6 +12,8 @@ public class KartEffectController : MonoBehaviour
     public Material smokeMat;
     public Transform wheekFR;
     public Transform wheekFL;
+    public Transform steerWheelFR;
+    public Transform steerWheelFL;
     public Transform wheelBR;
     public Transform wheelBL;
 
@@ -40,8 +42,8 @@ public class KartEffectController : MonoBehaviour
 
     public void startDrifting(float amount){
             Quaternion rot = Quaternion.Euler(driftRotation * amount);
-            wheekFL.localRotation = rot;
-            wheekFR.localRotation = rot;
+            steerWheelFL.localRotation = rot;
+            steerWheelFR.localRotation = rot;
 
         if(Mathf.Abs(amount) > .5f){
             if(!smokeParticles.isEmitting){
@@ -54,8 +56,8 @@ public class KartEffectController : MonoBehaviour
 
     public void stopDrifting(){
         Quaternion rot = Quaternion.Euler(Vector3.zero);
-            wheekFL.localRotation = rot;
-            wheekFR.localRotation = rot;
+        steerWheelFL.localRotation = rot;
+        steerWheelFR.localRotation = rot;
         smokeParticles.Stop();
     }
 
