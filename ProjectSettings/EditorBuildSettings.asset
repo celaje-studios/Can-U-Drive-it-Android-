@@ -5,25 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/PlayRoom/DemoMainMenu.unity
-    guid: 941b044f10dab564493d105a111b5286
-  - enabled: 0
-    path: Assets/Kart/Pistas/Pista1/Kart_Pista1.unity
-    guid: 6f14433bdd801804b93a9e2a87af025a
   - enabled: 1
-    path: Assets/Kart/Pistas/Pista2/Pista2.unity
-    guid: 898666ac62c80204a8bc0689196a709d
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+    path: Assets/Kart/Pistas/Santorini Grecia/GreciaScene.unity
+    guid: dc8e0f4b49f27b4458d09796497ad81a
   m_configObjects: {}
