@@ -24,6 +24,7 @@ public class KartEffectController : MonoBehaviour
     public Color grassColor;
     public Color nieveColor;
     public Color TierraColor;
+    public Color PiedraColor;
 
     //Variables Privadas
     bool isDrifting;
@@ -66,10 +67,14 @@ public class KartEffectController : MonoBehaviour
     if(col.transform.tag == "street"){
             kart.isOnStreet(true);    
             smokeMat.color = streetColor;        
-        }else if(col.transform.tag == "grass"){
-            kart.isOnStreet(false);
-            smokeMat.color = grassColor;
-        }
+    }else if(col.transform.tag == "grass"){
+        kart.isOnStreet(false);
+        smokeMat.color = grassColor;
+    }else if(col.transform.tag == "Piedra"){
+        kart.isOnStreet(false);
+        smokeMat.color = PiedraColor;
+
+    }
     }
 
     void OnCollisionExit(Collision col)
