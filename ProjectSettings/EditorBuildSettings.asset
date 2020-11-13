@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/MainMenu/MainMenu.unity
+    guid: a058a1435b1c6dd4ebae93fdaac67c44
+  - enabled: 1
+    path: Assets/MainMenu/KartSelection.unity
+    guid: 74dcd2a33ae8fb3409a4fb76be5e9701
+  - enabled: 1
     path: Assets/Kart/Pistas/Santorini Grecia/GreciaScene.unity
     guid: dc8e0f4b49f27b4458d09796497ad81a
   m_configObjects: {}
