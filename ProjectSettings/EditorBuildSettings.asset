@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Kart/Pistas/Santorini Grecia/GreciaScene.unity
     guid: dc8e0f4b49f27b4458d09796497ad81a
+  - enabled: 1
+    path: Assets/Kart/Pistas/Old Western/Old Western.unity
+    guid: a97b4f2bff0c7454a843b8173ff614db
   m_configObjects: {}

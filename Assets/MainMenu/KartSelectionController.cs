@@ -87,7 +87,6 @@ public class KartSelectionController : MonoBehaviour
     }
 
     public void StageSlot1(){
-        Debug.Log("Stage Slot 1 Clicked");
         SceneManager.LoadScene("GreciaScene");
     }
 

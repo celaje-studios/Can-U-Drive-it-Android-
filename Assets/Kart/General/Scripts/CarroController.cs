@@ -10,6 +10,8 @@ public class CarroController : MonoBehaviour
     public Rigidbody sphere;
     public Transform kartModel;
     public KartEffectController kartEffect;
+    public TextMeshProUGUI velTxt;
+    public TextMeshProUGUI auxTxt;
 
     [Header("Parameters")]
     public float forwardForce = 70f;
@@ -24,15 +26,24 @@ public class CarroController : MonoBehaviour
     float currentForce, maxAcceleration;
     bool reposition, breaking;
 
+    enum States{_init, _inGame, _finish};
+    States state;
+
     void Start()
     {
+        state = States._init;
         maxAcceleration = forwardForce*.4f;
+        currentForce = 0;
         reposition = false;
+        breaking = false;
     }
 
 
     void Update()
     {
+        if(!(state == States._inGame))
+            return;
+
         if(!reposition){
             if(Input.touchCount > 0){
 
@@ -55,18 +66,24 @@ public class CarroController : MonoBehaviour
 
                 if(touch.phase == TouchPhase.Ended){
                     rotate = 0f;
-                    currentForce = forwardForce;
                     kartEffect.stopDrifting();
                 }
 
                 currentForce = forwardForce + distanciaY;
 
+            }else{
+                currentForce = forwardForce;
             }
-
             currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f);
 
             transform.position = Vector3.Lerp(transform.position, sphere.transform.position, Time.deltaTime * 5f);
         }
+
+        velTxt.text = Mathf.RoundToInt(sphere.velocity.magnitude) + " km/h";
+        if(breaking)
+            auxTxt.text = currentForce + " force+";
+        else
+            auxTxt.text = currentForce + " force-";
     }
 
     void FixedUpdate(){
@@ -84,13 +101,10 @@ public class CarroController : MonoBehaviour
     public void Steer(float amount)
     {
         rotate = steering * amount;
-
         kartEffect.startDrifting(amount);
-
     }
 
     public void leaveColition(){
-        Debug.Log("reposition");
         reposition = true;
         currentForce = 0;
         sphere.position = new Vector3(kartModel.position.x, sphere.position.y, kartModel.position.z);
@@ -103,7 +117,14 @@ public class CarroController : MonoBehaviour
         breaking = inbreak;
     }
 
-    public void isOnColition(bool colition){
+    public void StartRace(){
+        state = States._inGame;
+        currentForce = forwardForce;
+    }
 
+    public void FinishRace(){
+        state = States._finish;
+        currentForce = 0;
+        currentRotate = 0;
     }
 }
