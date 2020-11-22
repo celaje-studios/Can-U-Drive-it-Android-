@@ -11,6 +11,7 @@ public class KartSelectionController : MonoBehaviour
     public GameObject[] Karts;
     public CanvasGroup kartSelectionUI;
     public CanvasGroup stageSelectionUI;
+    public KartSelectedSO kartSelection;
 
     //Variables Privadas
     enum States{_karts, _stage};
@@ -62,16 +63,18 @@ public class KartSelectionController : MonoBehaviour
     }
 
     public void KartSlot1(){
-        Debug.Log("Kart Slot 1 Clicked");
+        kartSelection.kart = Karts[0];
         kartSelected();
     }
 
     public void KartSlot2(){
-
+        kartSelection.kart = Karts[1];
+        kartSelected();
     }
 
     public void KartSlot3(){
-
+        kartSelection.kart = Karts[2];
+        kartSelected();
     }
 
     public void KartSlot4(){

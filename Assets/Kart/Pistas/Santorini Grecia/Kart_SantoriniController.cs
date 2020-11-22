@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Cinemachine;
 
 public class Kart_SantoriniController : MonoBehaviour, IKartLevel
 {
@@ -11,14 +12,21 @@ public class Kart_SantoriniController : MonoBehaviour, IKartLevel
     public CanvasGroup initUI;
     public CanvasGroup inGameUI;
     public CanvasGroup finishUI;
-    public GameObject kart;
     public TextMeshProUGUI timerTxt;
+    public KartSelectedSO kartSelected;
+    public Transform kartSpawn;
+    public CinemachineVirtualCamera Gamevcam;
+    public CinemachineVirtualCamera Finishvcam;
+    public TextMeshProUGUI velTxt;
+    public TextMeshProUGUI auxTxt;
 
     //Variables Privadas
     enum States{_init, _inGame, _finish};
     States state;
     float raceTime;
+    GameObject kart;
     CarroController kartControl;
+    float money;
 
     public void StartRace(){
         initUI.DOFade(0f, .5f);
@@ -66,10 +74,19 @@ public class Kart_SantoriniController : MonoBehaviour, IKartLevel
         finishUI.blocksRaycasts = false;
     }
 
+    void setCamera(){
+        Gamevcam.Follow = kart.transform.GetChild(1);
+        Gamevcam.LookAt = kart.transform.GetChild(1).GetChild(0);
+    }
+
     void Start(){
+        kart = Instantiate(kartSelected.kart, kartSpawn.position, kartSpawn.rotation);
+        Debug.Log(kart.transform.name);
+        kartControl = kart.GetComponentInChildren<CarroController>();
+        kartControl.setTxtReferences(velTxt, auxTxt);
         state = States._init;
-        kartControl = kart.GetComponent<CarroController>();
         initUI.alpha = 1f;
+        setCamera();
         desactivateFinishUI();
     }
 
@@ -82,5 +99,9 @@ public class Kart_SantoriniController : MonoBehaviour, IKartLevel
         if(state == States._inGame){
             raceTime += Time.deltaTime;
         }
+    }
+
+    public void addMoney(float add){
+        money += add;
     }
 }

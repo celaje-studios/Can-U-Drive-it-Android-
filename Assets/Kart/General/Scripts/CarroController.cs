@@ -79,11 +79,11 @@ public class CarroController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, sphere.transform.position, Time.deltaTime * 5f);
         }
 
-        velTxt.text = Mathf.RoundToInt(sphere.velocity.magnitude) + " km/h";
+        velTxt.text = Mathf.RoundToInt(sphere.velocity.magnitude * 3) + " km/h";
         if(breaking)
-            auxTxt.text = currentForce + " force+";
+            auxTxt.text = Mathf.RoundToInt(currentForce) + " force+";
         else
-            auxTxt.text = currentForce + " force-";
+            auxTxt.text = Mathf.RoundToInt(currentForce) + " force-";
     }
 
     void FixedUpdate(){
@@ -126,5 +126,10 @@ public class CarroController : MonoBehaviour
         state = States._finish;
         currentForce = 0;
         currentRotate = 0;
+    }
+
+    public void setTxtReferences(TextMeshProUGUI vel, TextMeshProUGUI aux){
+        velTxt = vel;
+        auxTxt = aux;
     }
 }

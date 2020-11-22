@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3074997498126377535, guid: 886e616b9a60ef14abac3bf9f6df4a41, type: 3}
+  - {fileID: 2100000, guid: 365122bde1adb004e9262c6e2c8d168b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -170,7 +170,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3074997498126377535, guid: 886e616b9a60ef14abac3bf9f6df4a41, type: 3}
+  - {fileID: 2100000, guid: 365122bde1adb004e9262c6e2c8d168b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 1559165199723634032}
   m_Layer: 0
   m_Name: DemoKart
-  m_TagString: Untagged
+  m_TagString: kart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 1559165200517927754}
   m_Layer: 0
   m_Name: Carro
-  m_TagString: Untagged
+  m_TagString: kart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -361,6 +361,8 @@ MonoBehaviour:
   sphere: {fileID: 1559165199771372265}
   kartModel: {fileID: 4375221323672679534}
   kartEffect: {fileID: 4375221323672679523}
+  velTxt: {fileID: 0}
+  auxTxt: {fileID: 0}
   forwardForce: 70
   steering: 25
 --- !u!1 &1559165201761994419
@@ -453,7 +455,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3074997498126377535, guid: 886e616b9a60ef14abac3bf9f6df4a41, type: 3}
+  - {fileID: 2100000, guid: 365122bde1adb004e9262c6e2c8d168b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10087,7 +10089,7 @@ GameObject:
   - component: {fileID: 4375221323672679533}
   m_Layer: 12
   m_Name: KartModel
-  m_TagString: Untagged
+  m_TagString: kart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10141,6 +10143,7 @@ MonoBehaviour:
   grassColor: {r: 0.3066038, g: 1, b: 0.4823784, a: 0.5019608}
   nieveColor: {r: 0, g: 0, b: 0, a: 0}
   TierraColor: {r: 0, g: 0, b: 0, a: 0}
+  PiedraColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &4375221323672679532
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10230,7 +10233,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3074997498126377535, guid: 886e616b9a60ef14abac3bf9f6df4a41, type: 3}
+  - {fileID: 2100000, guid: 365122bde1adb004e9262c6e2c8d168b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10340,7 +10343,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3074997498126377535, guid: 886e616b9a60ef14abac3bf9f6df4a41, type: 3}
+  - {fileID: 2100000, guid: 365122bde1adb004e9262c6e2c8d168b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

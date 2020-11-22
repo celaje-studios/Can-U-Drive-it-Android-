@@ -10,6 +10,7 @@ TagManager:
   - utilery
   - limits
   - Piedra
+  - kart
   layers:
   - Default
   - TransparentFX
