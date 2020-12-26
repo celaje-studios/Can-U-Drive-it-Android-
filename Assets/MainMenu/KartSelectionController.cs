@@ -78,7 +78,8 @@ public class KartSelectionController : MonoBehaviour
     }
 
     public void KartSlot4(){
-
+        kartSelection.kart = Karts[3];
+        kartSelected();
     }
 
     public void KartSlot5(){

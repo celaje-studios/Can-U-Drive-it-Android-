@@ -9,9 +9,8 @@ public class CarroController : MonoBehaviour
     [Header("Public References")]
     public Rigidbody sphere;
     public Transform kartModel;
-    public KartEffectController kartEffect;
-    public TextMeshProUGUI velTxt;
-    public TextMeshProUGUI auxTxt;
+
+
 
     [Header("Parameters")]
     public float forwardForce = 70f;
@@ -66,7 +65,6 @@ public class CarroController : MonoBehaviour
 
                 if(touch.phase == TouchPhase.Ended){
                     rotate = 0f;
-                    kartEffect.stopDrifting();
                 }
 
                 currentForce = forwardForce + distanciaY;
@@ -79,11 +77,7 @@ public class CarroController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, sphere.transform.position, Time.deltaTime * 5f);
         }
 
-        velTxt.text = Mathf.RoundToInt(sphere.velocity.magnitude * 3) + " km/h";
-        if(breaking)
-            auxTxt.text = Mathf.RoundToInt(currentForce) + " force+";
-        else
-            auxTxt.text = Mathf.RoundToInt(currentForce) + " force-";
+
     }
 
     void FixedUpdate(){
@@ -101,7 +95,7 @@ public class CarroController : MonoBehaviour
     public void Steer(float amount)
     {
         rotate = steering * amount;
-        kartEffect.startDrifting(amount);
+
     }
 
     public void leaveColition(){
@@ -128,8 +122,4 @@ public class CarroController : MonoBehaviour
         currentRotate = 0;
     }
 
-    public void setTxtReferences(TextMeshProUGUI vel, TextMeshProUGUI aux){
-        velTxt = vel;
-        auxTxt = aux;
-    }
 }

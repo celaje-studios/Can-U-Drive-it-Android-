@@ -13,10 +13,13 @@ public class Kart_SantoriniController : MonoBehaviour, IKartLevel
     public CanvasGroup inGameUI;
     public CanvasGroup finishUI;
     public TextMeshProUGUI timerTxt;
+    public TextMeshProUGUI moneyTxt;
     public KartSelectedSO kartSelected;
     public Transform kartSpawn;
     public CinemachineVirtualCamera Gamevcam;
     public CinemachineVirtualCamera Finishvcam;
+
+    //Temporal References
     public TextMeshProUGUI velTxt;
     public TextMeshProUGUI auxTxt;
 
@@ -26,6 +29,7 @@ public class Kart_SantoriniController : MonoBehaviour, IKartLevel
     float raceTime;
     GameObject kart;
     CarroController kartControl;
+    float totalRaceMoney =100;
     float money;
 
     public void StartRace(){
@@ -57,12 +61,24 @@ public class Kart_SantoriniController : MonoBehaviour, IKartLevel
         timerTxt.text = "Race Time:  " + min + "min " + sec + "sec";
     }
 
+    public void CalculateMoney(){
+        if(raceTime < 60){
+            money += 75;
+        }else if(raceTime < 90 && raceTime > 60){
+            money += 50;
+        }else if(raceTime > 90){
+            money += 25;
+        }
+        moneyTxt.text = money + "";
+    }
+
     public void BackToSelectKart(){
         SceneManager.LoadScene("KartSelection");
     }
 
     void activateFinishUI(){
         CalculateTime();
+        CalculateMoney();
         finishUI.DOFade(1f, .5f);
         finishUI.interactable = true;
         finishUI.blocksRaycasts = true;
@@ -83,7 +99,6 @@ public class Kart_SantoriniController : MonoBehaviour, IKartLevel
         kart = Instantiate(kartSelected.kart, kartSpawn.position, kartSpawn.rotation);
         Debug.Log(kart.transform.name);
         kartControl = kart.GetComponentInChildren<CarroController>();
-        kartControl.setTxtReferences(velTxt, auxTxt);
         state = States._init;
         initUI.alpha = 1f;
         setCamera();
