@@ -34,12 +34,8 @@ public class KartController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!(state == States._inGame))
-            Debug.Log("init state");
-            //return;
-
         if(Input.touchCount > 0){
-            Debug.Log("toque");
+
             Touch touch = Input.GetTouch(0);
                 
             if(touch.phase == TouchPhase.Began){
@@ -58,17 +54,14 @@ public class KartController : MonoBehaviour
             }
 
             if(touch.phase == TouchPhase.Ended){
+                distanciaX = 0;
+                distanciaY = 0;
                 rotate = 0f;
             }
+        }
 
-                currentForce = forwardForce + distanciaY;
-
-            }else{
-                currentForce = forwardForce;
-            }
-
+        currentForce = forwardForce + distanciaY;
         currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f);
-
         transform.position = Vector3.Lerp(transform.position, sphere.transform.position, Time.deltaTime * 5f);
     }
 
@@ -76,6 +69,7 @@ public class KartController : MonoBehaviour
 
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate, 0), Time.deltaTime * 5f);
         kartModel.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate*2f, 0), Time.deltaTime * 5f);
+    
         
         sphere.AddForce(transform.forward * currentForce, ForceMode.Acceleration);
 
@@ -84,6 +78,5 @@ public class KartController : MonoBehaviour
     public void Steer(float amount)
     {
         rotate = steering * amount;
-
     }
 }
